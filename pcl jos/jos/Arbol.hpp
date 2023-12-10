@@ -6,6 +6,8 @@ class Arbol
 {
     public:
         Arbol();
+        int arbolLongitud();
+        void setLongitud(int num);
         void insertarPedido(Pedido &p);
         void mostrarEnOrden();
         void insertar(Pedido &p);
@@ -16,7 +18,9 @@ class Arbol
         void inorden();
         void estandarSeguimientoMenor();
         void estandarSeguimientoMayor();
-        //Pedido Arbol:: pedidoArbol();
+        Pedido& obtenerUrgenteIdMayor();
+        Pedido& obtenerUrgenteIdMenor();
+        int numeroSeguimientoImpar();
         ~Arbol();
     private:
         NodoArbol *raiz;
@@ -29,7 +33,14 @@ class Arbol
         void inorden(NodoArbol*);
         Pedido estandarSeguimientoMenor(NodoArbol*);
         Pedido estandarSeguimientoMayor(NodoArbol*);
-
+        void urgenteIdMayor(NodoArbol*);
+        void urgenteIdMenor(NodoArbol*);
+        void numeroSeguimientoImpar(NodoArbol*);
+        
+        Pedido* mayorPedido;
+        Pedido* menorPedido;
+        int longitud;
+        int impares;
  /*
         NodoArbol* insertarPedido(NodoArbol* nodo, Pedido& pedido) {
         if (nodo == nullptr) {

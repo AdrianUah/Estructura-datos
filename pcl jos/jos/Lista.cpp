@@ -83,7 +83,7 @@ void Lista::desListar()
     }
     else
     {
-        cout << "ya esta vacio gilipollas" << endl;
+        cout << "ya esta vacio" << endl;
     }
 }
 
