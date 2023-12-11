@@ -131,35 +131,28 @@ void Arbol::dibujarNodo(vector<string>& output, vector<string>& linkAbove, NodoA
 
 void Arbol::pintarEstandar()
 {
-    pintarEstandar(raiz);
+    pintarEstandar(raiz->getAnterior());
     cout << '\n';
 }
 void Arbol::pintarEstandar(NodoArbol* nodo)
 {
     if(!nodo) return;
-    
-    if(nodo->obtenerPedido().getNumSeguimiento() <= 500){
         pintarEstandar(nodo->getAnterior());
         if(nodo->obtenerPedido().getNumSeguimiento() != 500) cout << nodo->obtenerPedido().getNumSeguimiento() << " ";
         pintarEstandar(nodo->getSiguiente()); 
-    }
-        
 }
 
 void Arbol::pintarUrgente()
 {
-    pintarUrgente(raiz);
+    pintarUrgente(raiz->getSiguiente());
     cout << '\n';
 }
 void Arbol::pintarUrgente(NodoArbol* nodo)
 {
     if(!nodo) return;
-    
-    if(nodo->obtenerPedido().getNumSeguimiento() >= 500){
         pintarUrgente(nodo->getAnterior());
         if(nodo->obtenerPedido().getNumSeguimiento() != 500) cout << nodo->obtenerPedido().getNumSeguimiento() << " ";
         pintarUrgente(nodo->getSiguiente()); 
-    }
 }
 
 void Arbol::inorden()
@@ -171,45 +164,41 @@ void Arbol::inorden()
 void Arbol::inorden(NodoArbol* nodo) {
     if (nodo != nullptr) {
         inorden(nodo->getAnterior());
-        if(nodo->obtenerPedido().getNumSeguimiento() != 500) nodo->obtenerPedido().informe(); // Muestra el pedido en lugar de solo el número de seguimiento
+        if(nodo->obtenerPedido().getNumSeguimiento() != 500) nodo->obtenerPedido().informe();
         inorden(nodo->getSiguiente());
     }
 }
 
 void Arbol::estandarSeguimientoMenor()
 {
-    Pedido menor=estandarSeguimientoMenor(raiz);
+    Pedido menor=estandarSeguimientoMenor(raiz->getAnterior());
     cout << "\tPEDIDO ESTANDAR CON MENOR NUMERO DE SEGUIMIENTO\n";
     menor.informe();
 }
 Pedido Arbol::estandarSeguimientoMenor(NodoArbol* nodo) {
-    if (nodo != nullptr && nodo->obtenerPedido().getNumSeguimiento() <= 500) {
-        while (nodo->getAnterior() != nullptr) {
-        nodo = nodo->getAnterior();
-        }
-    if(nodo->obtenerPedido().getNumSeguimiento() != 500) return nodo->obtenerPedido();
+    while (nodo->getAnterior() != nullptr) {
+    nodo = nodo->getAnterior();
     }
+    return nodo->obtenerPedido();
 }
 
 void Arbol::estandarSeguimientoMayor()
 {
-    Pedido mayor=estandarSeguimientoMayor(raiz);
+    Pedido mayor=estandarSeguimientoMayor(raiz->getAnterior());
     cout << "\tPEDIDO ESTANDAR CON MAYOR NUMERO DE SEGUIMIENTO\n";
     mayor.informe();
 }
 Pedido Arbol::estandarSeguimientoMayor(NodoArbol* nodo) {
-    nodo = nodo->getAnterior();
-    if (nodo->getSiguiente() != nullptr ) {
-        while (nodo->getSiguiente() != nullptr && nodo->getSiguiente()->obtenerPedido().getNumSeguimiento() <= 500) {
-        nodo = nodo->getSiguiente();
-        }
-    if(nodo->obtenerPedido().getNumSeguimiento() != 500) return nodo->obtenerPedido();
+    while (nodo->getSiguiente() != nullptr){// && nodo->getSiguiente()->obtenerPedido().getNumSeguimiento() <= 500) {
+    nodo = nodo->getSiguiente();
     }
+    return nodo->obtenerPedido();
 }
 
 Pedido& Arbol::obtenerUrgenteIdMenor() {
-    menorPedido = nullptr;  
-    urgenteIdMenor(raiz);
+    menorPedido = nullptr;
+    
+    urgenteIdMenor(raiz->getSiguiente());
     return *menorPedido;
 }
 
@@ -217,7 +206,7 @@ void Arbol::urgenteIdMenor(NodoArbol* nodo){
     
     if (nodo != nullptr) {
         if (menorPedido == nullptr || nodo->obtenerPedido().getPrioridad() < menorPedido->getPrioridad()) {
-            if((nodo->obtenerPedido().getNumSeguimiento()) > 500) menorPedido = &nodo->obtenerPedido();
+            menorPedido = &nodo->obtenerPedido();
         }
         urgenteIdMenor(nodo->getAnterior());
         urgenteIdMenor(nodo->getSiguiente());
@@ -226,13 +215,13 @@ void Arbol::urgenteIdMenor(NodoArbol* nodo){
 
 Pedido& Arbol::obtenerUrgenteIdMayor() {
     mayorPedido = nullptr;
-    urgenteIdMayor(raiz);
+    urgenteIdMayor(raiz->getSiguiente());
     return *mayorPedido;
 }
 void Arbol::urgenteIdMayor(NodoArbol* nodo){
     if (nodo != nullptr) {
         if (mayorPedido == nullptr || nodo->obtenerPedido().getPrioridad() > mayorPedido->getPrioridad()) {
-            if((nodo->obtenerPedido().getNumSeguimiento()) > 500) mayorPedido = &nodo->obtenerPedido();
+            mayorPedido = &nodo->obtenerPedido();
         }
         urgenteIdMayor(nodo->getAnterior());
         urgenteIdMayor(nodo->getSiguiente());
